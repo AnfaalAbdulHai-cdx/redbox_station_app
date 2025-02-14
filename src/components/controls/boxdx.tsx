@@ -1,7 +1,8 @@
-import {Box} from '../ui/box';
-import {Text} from '../ui/text';
+import { Box } from "../ui/box";
 
-const BoxDX = (props: any) => {
-  return <Box className="bg-primary-500 p-5">{props.children}</Box>;
+const BoxDX = (props: any) => { 
+  //remove padding from this part
+  return <Box className={props.className}>{props.children}</Box>;
 };
+
 export default BoxDX;

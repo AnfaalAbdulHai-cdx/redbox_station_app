@@ -35,8 +35,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from './src/screens/homescreen';
 import LoginScreen from './src/screens/loginscreen';
-import SignupScreen from './src/screens/signupscreen';
 import ImageDX from './src/components/controls/imagedx';
+import SignupScreen from './src/screens/SignupScreen';
+// import HomePage from './src/screens/HomePage';
+import HistoryDetails from './src/screens/HistoryDetails';
+import SupportScreen from './src/screens/SupportScreen';
+import TabNavigation from './src/config/TabNavigation';
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
@@ -51,20 +55,48 @@ const App = () => {
 
   return (
     <GluestackUIProvider>
+       <StatusBar backgroundColor="black" barStyle="light-content" />
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
-          }}>
-          {/* <Stack.Screen
-            name="Home"
-            component={HomeScreen}
+            // headerStyle: {
+            //   backgroundColor: '#000000',
+            // },
+            // headerTintColor: '#fff',
+            // headerTitleStyle: {
+            //   fontWeight: 'bold',
+            // },
+            // headerRight: () => (
+            //   <ImageDX
+            //     source={require('./src/assets/headerlogo.png')}
+            //     alt={'logo'}
+            //     className="w-182 h-215.09"
+            //   />
+            // ),
+          }}
+          >
+            {/* <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} /> */}
+          <Stack.Screen
+            name="HomeTab"
+            component={TabNavigation}
             options={{
               title: 'Red Today',
             }}
+          />
+            {/* <Stack.Screen
+            name="HistoryDetail"
+            component={HistoryDetails}
+            options={{
+            }}
           /> */}
-           <Stack.Screen name="Signup" component={SignupScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
+           {/* <Stack.Screen
+            name="SupportScreen"
+            component={SupportScreen}
+            options={{
+            }}
+          /> */}
         </Stack.Navigator>
       </NavigationContainer>
     </GluestackUIProvider>
