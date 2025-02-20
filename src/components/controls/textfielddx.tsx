@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Image } from "react-native"; // Import Image
-import { Input, InputField, InputSlot } from "../ui/input";
+import { Input, InputField, InputIcon,  InputSlot } from "../ui/input";
 import LabelDX from "./labeldx";
 import ViewStackDX from "./viewstackdx";
 import { EyeIcon, EyeOffIcon } from "../ui/icon"; // Adjusted icon import
@@ -28,18 +28,30 @@ const TextFieldDX = (props: any) => {
         )}
 
         {/* Input Field */}
-        <InputField
+        <InputField 
+         placeholder={props.placeholder} 
+         type={props.type === "password" && !showPassword ? "password" : "text"} // Ensures only password fields toggle
+         value={props.value} 
+         onChangeText={props.onChangeText} 
+        />
+
+        {/* <InputField
           placeholder={props.placeholder}
           type={showPassword ? "text" : props.type}
           className={props.classtext + " flex-1 px-2"}
-        />
+        /> */}
 
         {/* Password Toggle Icon */}
         {props.type === "password" && (
           <InputSlot onPress={() => setShowPassword(!showPassword)} className="cursor-pointer">
-            {showPassword ? <EyeOffIcon className="w-5 h-5 opacity-50" /> : <EyeIcon className="w-5 h-5 opacity-50" />}
+            <InputIcon as={showPassword ? EyeOffIcon : EyeIcon} className="text-typography-500 w-4 h-4 m-2" />
           </InputSlot>
         )}
+        {/* {props.type === "password" && (
+          <InputSlot onPress={() => setShowPassword(!showPassword)} className="cursor-pointer">
+            {showPassword ? <EyeOffIcon className="w-5 h-5 opacity-50" /> : <EyeIcon className="w-5 h-5 opacity-50" />}
+          </InputSlot>
+        )} */}
 
         {/* Right Icon */}
         {props.rightIcon && (

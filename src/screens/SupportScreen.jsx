@@ -1,20 +1,34 @@
 import React from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar, Text } from 'react-native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {StatusBar, Text} from 'react-native';
 import GridDX from '../components/controls/griddx';
 import GridItemDX from '../components/controls/griditemdx';
 import BoxDX from '../components/controls/boxdx';
 import HeadingDX from '../components/controls/headingdx';
+import ImageDX from '../components/controls/imagedx';
+import LabelDX from '../components/controls/labeldx';
 import IconDX from '../components/controls/icondx';
-import { ChevronLeftIcon } from '../components/ui/icon';
-// import ReceivedScreen from './ReceivedScreen';
+import {ChevronLeftIcon} from '../components/ui/icon';
 
 const Tab = createMaterialTopTabNavigator();
 
 const ReceivedScreen = () => (
   <BoxDX className="flex-1 bg-white items-center justify-center">
-    <Text className="text-black text-lg">Received Requests</Text>
+    <ImageDX
+      source={require('../assets/Support.png')}
+      alt="Received Replies"
+      size="100px"
+      className="mb-3"
+    />
+    <HeadingDX className="text-black text-[16px] font-medium text-center">
+      <LabelDX className="text-black text-[16px] font-medium">
+        Received Customer Replies
+      </LabelDX>
+    </HeadingDX>
+    <LabelDX className="text-black text-[14px] font-normal text-center mt-1 leading-tight w-2/3 tracking-tight">
+      All the replies for the problems you have added will be visible here.
+    </LabelDX>
   </BoxDX>
 );
 
@@ -35,33 +49,35 @@ const SupportScreen = () => {
     <SafeAreaView edges={['top']} className="flex-1 bg-white">
       <StatusBar backgroundColor="black" barStyle="light-content" />
 
-      <GridDX className="flex-1 w-full">
-        {/* Header with Fixed Height */}
-        <GridItemDX className="col-span-full h-16">
-          <BoxDX className="bg-black px-4 py-2 rounded-b-lg flex-row items-center h-full">
-            <IconDX icon={ChevronLeftIcon} className="text-white w-8 h-8" />
-            <HeadingDX text="Support" className="text-white text-xl flex-1 text-center" />
-          </BoxDX>
-        </GridItemDX>
+      <BoxDX className="bg-black px-2 pb-5 flex-row justify-between items-center rounded-b-md w-full">
+        <HeadingDX className="text-white text-[20px] font-semibold ml-4">
+          Support
+        </HeadingDX>
+      </BoxDX>
 
-        <GridItemDX className="flex-1">
-          <BoxDX className="flex-1 mt-2 pt-4">
-            <Tab.Navigator
-              screenOptions={{
-                tabBarLabelStyle: { fontSize: 14, fontWeight: 'bold', color: 'black' },
-                tabBarStyle: { backgroundColor: 'white' },
-                tabBarIndicatorStyle: { backgroundColor: 'black' },
-                tabBarActiveTintColor: 'black',
-                tabBarInactiveTintColor: 'gray',
-              }}
-            >
-              <Tab.Screen name="Received" component={ReceivedScreen} />
-              <Tab.Screen name="Waiting" component={WaitingScreen} />
-              <Tab.Screen name="Resolved" component={ResolvedScreen} />
-            </Tab.Navigator>
-          </BoxDX>
-        </GridItemDX>
-      </GridDX>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: {fontSize: 16, fontWeight: 400},
+          tabBarActiveTintColor: '#E21F26',
+          tabBarInactiveTintColor: '#B3B3B3',
+          tabBarIndicatorStyle: {
+            backgroundColor: '#E21F26',
+            height: 2,
+            bottom: -2,
+          },
+          tabBarStyle: {
+            marginHorizontal: 10,
+            backgroundColor: 'white',
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 2,
+            borderBottomColor: '#D3D3D3',
+          },
+        }}>
+        <Tab.Screen name="Received" component={ReceivedScreen} />
+        <Tab.Screen name="Waiting" component={WaitingScreen} />
+        <Tab.Screen name="Resolved" component={ResolvedScreen} />
+      </Tab.Navigator>
     </SafeAreaView>
   );
 };

@@ -1,5 +1,5 @@
-import React from 'react';
-import {StatusBar} from 'react-native';
+import React, { useEffect, useState } from "react";
+import {StatusBar,TouchableOpacity, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import GridDX from '../components/controls/griddx';
 import GridItemDX from '../components/controls/griditemdx';
@@ -10,17 +10,63 @@ import LabelDX from '../components/controls/labeldx';
 import IconDX from '../components/controls/icondx';
 import ImageDX from '../components/controls/imagedx';
 import DividerDX from '../components/controls/dividerdx';
+import HomeBoxDX from "../components/controls/homeboxdx";
 import {PlayIcon, ChevronRightIcon} from '../components/ui/icon';
+import {getOrders} from '../services/orderservice';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTranslation } from "react-i18next";
+import "../locales/i18n"; 
+
+
+
 
 const HomePage = () => {
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language);
+  const [isLoading, setIsLoading] = useState(false);
+  const [dueOrders, setDueOrders] = useState<any>({});
+
+  useEffect(() => {
+    setIsLoading(true);
+    let request = {};
+    getOrders(request)
+      .then(response => setDueOrders(response))
+      .catch(error => {})
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  const toggleLanguage = async () => {
+    const newLang = language === "en" ? "ar" : "en";
+    await AsyncStorage.setItem("appLanguage", newLang);
+    i18n.changeLanguage(newLang);
+    setLanguage(newLang);
+  };
+
+  useEffect(() => {
+    const loadLanguage = async () => {
+      const storedLang = await AsyncStorage.getItem("appLanguage");
+      if (storedLang) {
+        i18n.changeLanguage(storedLang);
+        setLanguage(storedLang);
+      }
+    };
+    loadLanguage();
+  }, []);
+
   return (
     <SafeAreaView>
       <StatusBar backgroundColor="black" barStyle="light-content" />
  
       <GridDX className="flex-row items-center bg-background-0 h-full">
       <GridItemDX className="col-span-full p-0">
-          <BoxDX className="bg-black px-2 py-5 flex-row justify-between items-center rounded-b-xl w-full">
-            <HeadingDX className="text-white text-xl mt-[-10px] ml-[10px]">Red Today</HeadingDX>
+          <HomeBoxDX variant="header">
+            <HeadingDX className="text-white text-xl mt-[-10px] ml-[10px]">{t("title")}</HeadingDX>
+
+
+            {/* Language Toggle Button */}
+            <TouchableOpacity onPress={toggleLanguage} className="bg-white px-3 py-1 rounded items-center justify-center">
+              <Text className="text-black">{language === "en" ? "عربي" : "English"}</Text>
+            </TouchableOpacity>
 
             {/* Logo Image Inside GridDX */}
             <GridDX className="w-10 h-10 rounded-full overflow-hidden mt-[-10px] mr-[12px]">
@@ -31,61 +77,61 @@ const HomePage = () => {
                 style={{ resizeMode: "contain" }}
               />
             </GridDX>
-          </BoxDX>
+            </HomeBoxDX>
+
         </GridItemDX>
 
         {/* Ready Orders Section */}
-      <GridItemDX className="p-3">
-     <BoxDX className="flex flex-row items-center space-x-2">
-      {/* Vector Image Inside GridDX (Small & Circular) */}
-       <GridDX className="w-8 h-8  overflow-hidden relative flex  justify-center items-center">
-        <ImageDX source={require("../assets/Vector.png")} alt="Shirt Logo" className="w-full h-full"  style={{ resizeMode: "contain" }}/>
-        {/* Shirt Number Overlay */}
-        <LabelDX className="absolute flex text-sm text-white font-bold  justify-center items-center left-[10px]">
-         {dummyData.tshirtNumber}
-        </LabelDX>
+     <GridItemDX className="p-3">
+     <HomeBoxDX variant="ready">
+    {/* T-Shirt Image (Moves Based on Language) */}
+    <GridDX className="w-8 h-8 overflow-hidden relative flex justify-center items-center">
+      <ImageDX source={require("../assets/Vector.png")} alt="Shirt Logo" className="w-full h-full" style={{ resizeMode: "contain" }} />
+      {/* Shirt Number Overlay */}
+      <LabelDX className="absolute flex text-sm text-white font-bold justify-center items-center left-[10px]">
+        {dummyData.tshirtNumber}
+      </LabelDX>
     </GridDX>
 
-      {/* Text Content */}
-      <LabelDX className="text-black text-lg font-small ml-2">
-       ready orders out of{" "}
-       <LabelDX className="text-black font-bold text-lg">
+    {/* Text Content */}
+    <LabelDX className="text-black text-lg font-small mx-2">
+      {t("readyOrders")}{" "}
+      <LabelDX className="text-black font-bold text-lg">
         {dummyData.readyOrders}
-       </LabelDX>
       </LabelDX>
-     </BoxDX>
-  
-    {/* Divider Line */}
-    <BoxDX className="mt-4 w-[99%] max-w-[100%] h-[1px] bg-gray-300 self-center" />
+    </LabelDX>
+  </HomeBoxDX>
 
-    {/* <BoxDX className="mt-2 w-[90%] h-[1px] bg-gray-300 self-center" /> */}
-    </GridItemDX>
+  {/* Divider Line */}
+  <HomeBoxDX variant="divider" />
+</GridItemDX>
+
      
 
      {/* Show Only Section */}
-<GridItemDX className="p-4">
+ <GridItemDX className="p-4">
   {/* "Show only:" Label (Moved Up) */}
-  <BoxDX className="mb-5 mt-[-30px]">
-    <LabelDX className="text-black text-lg font-normal">Show only:</LabelDX>
-  </BoxDX>
+  <HomeBoxDX variant="section">
+    <LabelDX className="text-black text-lg font-normal">{t("showOnly")}</LabelDX>
+  </HomeBoxDX>
 
   {/* Full-Width DividerDX */}
   <DividerDX orientation="horizontal" className="w-[100%] h-8 border border-gray-300 rounded-md flex-row overflow-hidden self-center">
     {/* Left Section (Active: 11 AM) */}
-    <BoxDX className="flex-1 bg-[#E21F26] justify-center items-center">
-      <LabelDX className="text-white font-bold text-sm">11 AM</LabelDX>
-    </BoxDX>
+    <HomeBoxDX variant="left">
+      <LabelDX className="text-white font-bold text-sm">{t("time11AM")}</LabelDX>
+    </HomeBoxDX>
 
     {/* Right Section (Inactive: 4 PM) */}
-    <BoxDX className="flex-1 bg-white justify-center items-center">
-      <LabelDX className="text-gray-500 font-normal text-sm">4 PM</LabelDX>
-    </BoxDX>
+    <HomeBoxDX variant="right">
+      <LabelDX className="text-gray-500 font-normal text-sm">{t("time4PM")}</LabelDX>
+    </HomeBoxDX>
   </DividerDX>
 </GridItemDX>
 
 {/* CHECK DRIVERS */}
 <GridItemDX className="pl-4 pr-4 m-0">
-  <BoxDX className="flex flex-row items-center border border-gray-300 rounded-lg px-4 py-4 space-x-3 mt-0">
+<HomeBoxDX variant="card">
     
     {/* Truck Icon */}
     <ImageDX 
@@ -97,64 +143,64 @@ const HomePage = () => {
 
     {/* Text Label */}
     <LabelDX className="text-primary-400 font-normal text-lg ml-4 flex-1">
-      Check Drivers
+    {t("checkDrivers")}
     </LabelDX>
 
     {/* Right Arrow Icon using IconDX */}
-    <BoxDX className="w-7 h-7 items-center justify-center rounded-md">
+    <HomeBoxDX variant="rightarrow">
       <IconDX icon={ChevronRightIcon} size={16} className="text-black" />
-    </BoxDX>
+    </HomeBoxDX>
+</HomeBoxDX>
 
-  </BoxDX>
 </GridItemDX>
 
 <GridItemDX className="pl-4 pr-4">
         <GridItemDX className="w-full flex flex-row justify-between mt-2">
           <HeadingDX
-            text="Due Orders"
+            text={t("dueOrders")}
             className="text-left text-[20px] font-semibold"
           />
-          <BoxDX className="bg-secondary-200 w-[32px] h-[27px] rounded-[50px] flex items-center justify-center">
+          <HomeBoxDX variant="DueOrders">
             <LabelDX
               className="text-typography-950 font-semibold"
-              text={dummyData.dueOrders.total}
+              text={dueOrders}
             />
-          </BoxDX>
+         </HomeBoxDX>
         </GridItemDX>
         <GridItemDX className="w-full h-[111px] bg-white border-[1px] border-secondary-700 rounded-[4px] flex-row items-center mt-4">
   <GridItemDX className="flex-col ml-3 mr-3 flex-1"> 
-    <BoxDX className="w-[84px] h-[32px] border-[1px] border-secondary-950 rounded-[100px] bg-typography-50 flex-row items-center justify-center mt-0 ml-0">
+    {/* playicon */}
+    <HomeBoxDX variant="playicon">
       <ImageDX
         source={require('../assets/playicon.png')}
         alt={'playicon'}
         className="w-5 h-5 absolute left-2"
       />
-      <LabelDX className="text-black font-medium ml-6" text="Pack" />
-    </BoxDX>
+      <LabelDX className="text-black font-medium ml-6" text={t("pack")} />
+    </HomeBoxDX>
     <BoxDX className="w-full flex flex-row items-center mt-5">
       <LabelDX
         className="text-primary-300 font-normal text-[16px]"
-        text="Orders"
+        text={t("orders")}
       />
-      <BoxDX className="bg-secondary-200 w-[32px] h-[27px] rounded-[50px] flex items-center justify-center ml-3">
+      <HomeBoxDX variant="total">
         <LabelDX
           className="text-typography-950 font-semibold"
           text={dummyData.dueOrders.total}
         />
-      </BoxDX>
+     </HomeBoxDX>
 
       <ImageDX
         source={require('../assets/Vector.png')}
         alt={'shirt'}
         className="w-6 h-6 ml-8"
       />
-
-      <BoxDX className="bg-secondary-200 w-[32px] h-[27px] rounded-[50px] flex items-center justify-center ml-3">
+       <HomeBoxDX variant="total">
         <LabelDX
           className="text-typography-950 font-semibold"
           text={dummyData.dueOrders.orders[1].count}
         />
-      </BoxDX>
+      </HomeBoxDX>
     </BoxDX>
   </GridItemDX>
   <BoxDX className="w-7 h-7 flex items-center justify-center rounded-md mr-3"> 
@@ -163,7 +209,7 @@ const HomePage = () => {
 </GridItemDX>
 <GridItemDX className="w-full flex flex-row justify-between mt-4">
           <HeadingDX
-            text="Start Processing Today"
+            text={t("startProcessingToday")}
             className="text-left text-[20px] font-semibold"
           />
           <BoxDX className="bg-secondary-200 w-[32px] h-[27px] rounded-[50px] flex items-center justify-center">
@@ -182,7 +228,7 @@ const HomePage = () => {
           alt={'doublearrow'}
           className="w-7 h-7"
         />
-        <LabelDX className="text-primary-300 font-normal text-[16px] ml-2" text="Prioritized Future Orders" />
+        <LabelDX className="text-primary-300 font-normal text-[16px] ml-2" text={t("prioritizedFutureOrders")} />
       </BoxDX>
       <BoxDX className="flex-row items-center ml-auto">
         <BoxDX className="bg-secondary-200 w-[32px] h-[27px] rounded-[50px] flex items-center justify-center">
@@ -204,7 +250,7 @@ const HomePage = () => {
           alt={'inspect'}
           className="w-7 h-7"
         />
-        <LabelDX className="text-primary-300 font-normal text-[16px] ml-2" text="Inspect" />
+        <LabelDX className="text-primary-300 font-normal text-[16px] ml-2" text={t("inspect")}/>
       </BoxDX>
       <BoxDX className="flex-row items-center ml-auto">
         <BoxDX className="bg-secondary-200 w-[32px] h-[27px] rounded-[50px] flex items-center justify-center">

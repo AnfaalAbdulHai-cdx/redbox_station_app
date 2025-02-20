@@ -15,7 +15,7 @@ const SignupScreen = () => {
   return (
     <SafeAreaView>
       <StatusBar backgroundColor="white" barStyle="dark-content" />
-        <GridDX className="bg-background-0 h-full">
+        <GridDX className="bg-background-0 h-full pl-4 pr-4">
       {/* Logo */}
       <GridItemDX className="items-center" style={{marginTop: 103}}>
           <ImageDX

@@ -36,9 +36,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from './src/screens/homescreen';
 import LoginScreen from './src/screens/loginscreen';
 import ImageDX from './src/components/controls/imagedx';
-import SignupScreen from './src/screens/SignupScreen';
+import SignupScreen from './src/screens/signupscreen';
+// import SignupScreen from './src/screens/SignupScreen';
 // import HomePage from './src/screens/HomePage';
-import HistoryDetails from './src/screens/HistoryDetails';
+import HistoryDetails from './src/screens/historydetails';
 import SupportScreen from './src/screens/SupportScreen';
 import TabNavigation from './src/config/TabNavigation';
 type SectionProps = PropsWithChildren<{
@@ -76,8 +77,8 @@ const App = () => {
             // ),
           }}
           >
-            {/* <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Signup" component={SignupScreen} /> */}
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
           <Stack.Screen
             name="HomeTab"
             component={TabNavigation}

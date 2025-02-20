@@ -8,6 +8,8 @@ import OrderScreen from "../screens/orderscreen";
 import HistoryPage from "../screens/historypage";
 import ScanScreen from "../screens/ScanScreen";
 import SupportScreen from "../screens/SupportScreen";
+import HistoryDetails from "../screens/historydetails";
+import HistoryStackNavigator from "./HistoryStackNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -38,7 +40,8 @@ const TabNavigation = () => {
         <Tab.Screen name="Home" component={HomePage} />
         <Tab.Screen name="Orders" component={OrderScreen} />
         <Tab.Screen name="Scan" component={ScanScreen} />
-        <Tab.Screen name="History" component={HistoryPage} />
+        <Tab.Screen name="History" component={HistoryStackNavigator} />
+        {/* <Tab.Screen name="History" component={HistoryPage} /> */}
         <Tab.Screen name="Support" component={SupportScreen} />
       </Tab.Navigator>
     </SafeAreaView>
