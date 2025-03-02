@@ -18,9 +18,8 @@ const OverdueScreen = () => {
       <BoxDX className="px-0 pt-3">
         <TextFieldDX
           placeholder={t("searchAndFilter")}
-          isReadOnly
-          leftIcon={require("../assets/search.png")}  
-          rightIcon={require("../assets/mdi_filter.png")}
+          leftIcon="search"  
+          rightIcon="filter"
           className="px-4 py-2"
         />
       </BoxDX>
@@ -71,6 +70,7 @@ const OverdueScreen = () => {
 
             {/* Show Orders Link */}
             <LinkDX linkAddress="/ Show Orders" linkText=" Show Orders" className="text-blue-500 py-3  text-center font-medium" />
+            
           </BoxDX>
         </BoxDX>
       ))}

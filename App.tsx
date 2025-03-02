@@ -8,6 +8,7 @@ import './global.css';
 
 import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   SafeAreaView,
   ScrollView,
@@ -55,6 +56,7 @@ const App = () => {
   };
 
   return (
+    <GestureHandlerRootView>
     <GluestackUIProvider>
        <StatusBar backgroundColor="black" barStyle="light-content" />
       <NavigationContainer>
@@ -101,6 +103,7 @@ const App = () => {
         </Stack.Navigator>
       </NavigationContainer>
     </GluestackUIProvider>
+    </GestureHandlerRootView>
   );
 };
 

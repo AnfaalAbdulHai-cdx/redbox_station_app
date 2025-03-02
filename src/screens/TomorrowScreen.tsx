@@ -1,81 +1,72 @@
-import React from "react";
-import { ScrollView } from "react-native";
-import BoxDX from "../components/controls/boxdx";
-import LabelDX from "../components/controls/labeldx";
-import ImageDX from "../components/controls/imagedx";
-import TextFieldDX from "../components/controls/textfielddx";
-import ordersData from "../services/ordersData"; // Import order data
-import { useTranslation } from "react-i18next";
-import todayscreenData from "../services/todayscreendata";
-import LinkDX from '../components/controls/linkDX';
+import React, { useRef, useCallback } from 'react';
+import { View, StyleSheet, Text, Button } from 'react-native';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetView , BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import { useTranslation } from 'react-i18next';
+import In24hScreen from './In24hScreen';
+import PressableDX from '../components/controls/pressabledx';
+import TextFieldDX from '../components/controls/textfielddx';
+import ButtonDX from '../components/controls/buttondx';
 
-const TomorrowScreen = () => {
+export default function TomorrowScreen() {
   const { t } = useTranslation();
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // Function to open the bottom sheet
+  const handleOpenPress = () => {
+    bottomSheetRef.current?.expand();
+  };
+
+  // Function to close the bottom sheet
+  const handleClosePress = useCallback(() => {
+    bottomSheetRef.current?.close();
+  }, []);
 
   return (
-    <ScrollView className="flex-1 bg-white">
-      {/* Search Bar */}
-      <BoxDX className="px-0 pt-3">
-        <TextFieldDX
-          placeholder={t("searchAndFilter")}
-          isReadOnly
-          leftIcon={require("../assets/search.png")}  
-          rightIcon={require("../assets/mdi_filter.png")}
-          className="px-4 py-2"
-        />
-      </BoxDX>
-
-      {ordersData.map((order) => (
-        <BoxDX key={order.id} className="mx-4 mt-4">
-          {/* Time Section */}
-          <BoxDX className="flex-row justify-between items-center">
-            <LabelDX className="text-gray-600 font-medium">{order.time}</LabelDX>
-            <BoxDX className="bg-blue-500 w-[30px] h-[24px] rounded-[19px] flex items-center justify-center">
-  <LabelDX className="text-white text-sm font-bold leading-none ml-0.5">
-    {order.total}
-  </LabelDX>
-</BoxDX>
-            
-          </BoxDX>
-
-          {/* Order Card */}
-          <BoxDX className="bg-white mt-2 rounded-lg shadow-sm border border-gray-200">
-            <BoxDX className="p-3">
-              {/* Status and Items Row */}
-              <BoxDX className="flex-row items-center justify-between">
-                {/* Status */}
-                <LabelDX className="text-blue-500 text-md font-medium">
-                  {order.status}
-                </LabelDX>
-
-                  {/* history new code */}
-                 
-                  <BoxDX className="flex-row items-center">
-                    {todayscreenData.batches.map((batch, index) => (
-                    <BoxDX key={index} className="flex-row items-center mx-2">
-                    {batch.icon && (
-                       <ImageDX source={batch.image} alt={batch.icon}  className="w-6 h-6" />
-                     )}
-                      <BoxDX className="bg-secondary-200 w-[32px] h-[27px] rounded-[50px] flex items-center justify-center ml-3">
-                           <LabelDX className="text-typography-950 font-semibold items-center justify-center" text={batch.count} />
-                      </BoxDX>
-                    </BoxDX>
-                     ))}
-   
-                    </BoxDX>
-              </BoxDX>
-            </BoxDX>
-
-            {/* Separator Line */}
-            <BoxDX className="h-[1px] bg-gray-300 w-full" />
-
-            {/* Show Orders Link */}
-            <LinkDX linkAddress="/ Show Orders" linkText=" Show Orders" className="text-blue-500 py-3  text-center font-medium" />
-          </BoxDX>
-        </BoxDX>
-      ))}
-    </ScrollView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        {/* Button to open Bottom Sheet */}
+        <Button title="Search & Filter" onPress={handleOpenPress} />
+        <ButtonDX onPress={handleOpenPress} className="bg-transparent p-0">
+  <TextFieldDX
+    placeholder={t("searchAndFilter")}
+    leftIcon="search"
+    rightIcon="filter"
+    className="px-4 py-2"
+    isReadOnly={true}
+  />
+</ButtonDX>
+        {/* Bottom Sheet */}
+        <BottomSheet ref={bottomSheetRef} index={-1} snapPoints={['25%', '50%']} enablePanDownToClose={true}>
+          <BottomSheetScrollView>
+          {/* <View style={styles.sheetContent}>
+            <Text style={styles.sheetText}>Awesome Bottom Sheet</Text>
+            <Button title="Close" onPress={handleClosePress} />
+          </View> */}
+          <In24hScreen/>
+          </BottomSheetScrollView>
+        </BottomSheet>
+      </View>
+    </GestureHandlerRootView>
   );
-};
+}
 
-export default TomorrowScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f8f9fa',
+  },
+  sheetContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  sheetText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});

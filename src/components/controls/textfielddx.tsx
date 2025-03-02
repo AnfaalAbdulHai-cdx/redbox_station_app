@@ -4,6 +4,8 @@ import { Input, InputField, InputIcon,  InputSlot } from "../ui/input";
 import LabelDX from "./labeldx";
 import ViewStackDX from "./viewstackdx";
 import { EyeIcon, EyeOffIcon } from "../ui/icon"; // Adjusted icon import
+import MIcon from "react-native-vector-icons/MaterialIcons";
+import CIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const TextFieldDX = (props: any) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,13 +21,18 @@ const TextFieldDX = (props: any) => {
         isInvalid={props.isInvalid}
         isReadOnly={props.isReadOnly}
         className="flex-row items-center border border-gray-300 rounded-lg px-3 py-2"
+        
       >
         {/* Left Icon */}
         {props.leftIcon && (
-          <InputSlot className="ml-2">
-            <Image source={props.leftIcon} style={{ width: 20, height: 20, opacity: 0.5 }} />
-          </InputSlot>
-        )}
+  <InputSlot className="ml-2">
+    {props.leftIconType === "MaterialCommunityIcons" ? (
+      <CIcon name={props.leftIcon} size={20} color="#666" />
+    ) : (
+      <MIcon name={props.leftIcon} size={20} color="#666" />
+    )}
+  </InputSlot>
+)}
 
         {/* Input Field */}
         <InputField 
@@ -55,10 +62,10 @@ const TextFieldDX = (props: any) => {
 
         {/* Right Icon */}
         {props.rightIcon && (
-          <InputSlot className="mr-2">
-            <Image source={props.rightIcon} style={{ width: 20, height: 20, opacity: 0.5 }} />
-          </InputSlot>
-        )}
+  <InputSlot className="mr-2" onPress={props.onPress}>
+    <CIcon name={props.rightIcon} size={20} color="#666" />
+  </InputSlot>
+)}
       </Input>
 
       {props.hint && <LabelDX text={props.hint} className="text-typography-500 text-xs" />}

@@ -7,8 +7,10 @@ import HeadingDX from "../components/controls/headingdx";
 import LabelDX from "../components/controls/labeldx";
 import ImageDX from "../components/controls/imagedx";
 import TextFieldDX from "../components/controls/textfielddx";
-
-// Import individual tab screens
+import BoxHeaderDX from "../components/controls/boxheaderdx";
+import HeadingWhiteDX from "../components/controls/headingwhitedx";
+import BottomSheet, { useBottomSheet, BottomSheetView,BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import PressableDX from '../components/controls/pressabledx';
 import TodayScreen from "./TodayScreen";
 import TomorrowScreen from "./TomorrowScreen";
 import In24hScreen from "./In24hScreen";
@@ -29,8 +31,7 @@ const OrderScreen = () => {
     await AsyncStorage.setItem("appLanguage", newLang);
     i18n.changeLanguage(newLang);
     setLanguage(newLang);
-    //when switch languages, the tabs will properly update their names
-    setKey((prevKey) => prevKey + 1); // Update key to force re-render
+    setKey((prevKey) => prevKey + 1);
   };
 
   useEffect(() => {
@@ -50,8 +51,8 @@ const OrderScreen = () => {
       <StatusBar backgroundColor="black" barStyle="light-content" />
 
       {/* Header Section */}
-      <BoxDX className="bg-black px-2 py-5 flex-row justify-between items-center rounded-b-md w-full">
-        <HeadingDX className="text-white text-xl">{t("redOrders")}</HeadingDX>
+      <BoxHeaderDX className="px-2 py-5">
+        <HeadingWhiteDX>{t("redOrders")}</HeadingWhiteDX>
 
         {/* By Bag + Switch */}
         <BoxDX className="flex-row items-center">
@@ -62,11 +63,10 @@ const OrderScreen = () => {
             className="w-8 h-4 ml-2"
           />
         </BoxDX>
-      </BoxDX>
-
-      {/* Material Top Tab Navigator */}
+      </BoxHeaderDX>
+     {/* <CustomHeader/> */}
       <Tab.Navigator
-        key={key} // Ensure re-render when language changes
+        key={key}
         screenOptions={{
           tabBarLabelStyle: { fontSize: 15, fontWeight: "normal" },
           tabBarActiveTintColor: "red",
@@ -74,7 +74,7 @@ const OrderScreen = () => {
           tabBarIndicatorStyle: { backgroundColor: "red", height: 2 },
         }}
       >
-        <Tab.Screen name={t("today")} component={TodayScreen} />
+        <Tab.Screen name={t("today")} component={TodayScreen}/>
         <Tab.Screen name={t("tomorrow")} component={TomorrowScreen} />
         <Tab.Screen name={t("in24h")} component={In24hScreen} />
         <Tab.Screen name={t("overdue")} component={OverdueScreen} />
