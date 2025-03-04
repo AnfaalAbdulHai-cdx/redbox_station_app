@@ -63,7 +63,11 @@ const TextFieldDX = (props: any) => {
         {/* Right Icon */}
         {props.rightIcon && (
   <InputSlot className="mr-2" onPress={props.onPress}>
-    <CIcon name={props.rightIcon} size={20} color="#666" />
+   {props.RightIconType === "MaterialCommunityIcons" ? (
+      <CIcon name={props.rightIcon} size={20} color="#666" />
+    ) : (
+      <MIcon name={props.rightIcon} size={20} color="#666" />
+    )}
   </InputSlot>
 )}
       </Input>

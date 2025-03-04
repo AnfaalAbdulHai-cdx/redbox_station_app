@@ -30,6 +30,7 @@ const TodayScreen = () => {
               placeholder={t("searchAndFilter")}
               leftIcon="search"
               rightIcon="filter"
+              RightIconType="MaterialCommunityIcons"
               className="px-4 py-2"
               isReadOnly={true}
               onPress={handleOpenPress}

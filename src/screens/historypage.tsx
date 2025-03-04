@@ -29,7 +29,8 @@ const HistoryPage = () => {
       <TextFieldDX
         placeholder="Search"
         isReadOnly={false} 
-        rightIcon={require("../assets/search.png")}
+        rightIcon="search"
+        RightIconType="MaterialIcons"
         className="px-10 py-4"
       />
     </BoxDX>
