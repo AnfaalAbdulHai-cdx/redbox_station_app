@@ -31,7 +31,7 @@ const HistoryPage = () => {
         isReadOnly={false} 
         rightIcon="search"
         RightIconType="MaterialIcons"
-        className="px-10 py-4"
+        className="px-0 py-0"
       />
     </BoxDX>
   </GridItemDX>

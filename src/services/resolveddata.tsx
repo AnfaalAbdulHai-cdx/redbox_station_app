@@ -10,6 +10,7 @@ export const ResolvedData = [
         items: [
             {
                 name: "Shirt on Hanger",
+                imageUrl: require("../assets/cloth.jpeg"),
                 image: require("../assets/Vector.png"),
                 quantity: 1,
                 issue: "Inspection - incorrect items",
@@ -17,6 +18,7 @@ export const ResolvedData = [
             },
             {
                 name: "Bag STAYCNW",
+                imageUrl: require("../assets/cloth.jpeg"),
                 image: require("../assets/hanger.png"),
                 quantity: 1,
                 issue: "Inspection - incorrect items",
@@ -35,6 +37,7 @@ export const ResolvedData = [
         items: [
             {
                 name: "Jeans",
+                imageUrl: require("../assets/cloth.jpeg"),
                 image: require("../assets/Vector.png"),
                 quantity: 1,
                 issue: "Inspection - minor defect",
@@ -42,6 +45,7 @@ export const ResolvedData = [
             },
             {
                 name: "T-shirt",
+                imageUrl: require("../assets/cloth.jpeg"),
                 image: require("../assets/hanger.png"),
                 quantity: 1,
                 issue: "Inspection - approved",

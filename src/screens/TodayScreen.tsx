@@ -74,8 +74,6 @@ const TodayScreen = () => {
           </BoxDX>
         ))}
       </ScrollView>
-
-      {/* BottomSheet Outside ScrollView */}
       <BottomSheet ref={bottomSheetRef} index={-1} snapPoints={['75%', '85%']} enablePanDownToClose={true}>
         <BottomSheetScrollView>
           <In24hScreen />

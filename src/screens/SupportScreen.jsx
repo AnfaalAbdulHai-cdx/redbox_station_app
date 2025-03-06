@@ -12,7 +12,7 @@ import IconDX from '../components/controls/icondx';
 import {ChevronLeftIcon} from '../components/ui/icon';
 import ReceivedScreen from './receivedscreen';
 import WaitingScreen from './waitingscreen';
-import ResolvedScreen from './resolvedscreen';
+import ResolvedStackNavigator from '../config/resolvedscreennavigator';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -48,7 +48,7 @@ const SupportScreen = () => {
         }}>
         <Tab.Screen name="Received" component={ReceivedScreen} />
         <Tab.Screen name="Waiting" component={WaitingScreen} />
-        <Tab.Screen name="Resolved" component={ResolvedScreen} />
+        <Tab.Screen name="Resolved" component={ResolvedStackNavigator} />
       </Tab.Navigator>
     </SafeAreaView>
   );
