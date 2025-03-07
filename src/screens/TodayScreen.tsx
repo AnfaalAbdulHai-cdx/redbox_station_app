@@ -19,7 +19,9 @@ const TodayScreen = () => {
   const handleOpenPress = () => {
     bottomSheetRef.current?.expand();
   };
-
+  const handleCloseBottomSheet = () => {
+    bottomSheetRef.current?.close();
+  };
   return (
     <View className="flex-1 bg-white">
       {/* ScrollView for Order List */}
@@ -74,9 +76,14 @@ const TodayScreen = () => {
           </BoxDX>
         ))}
       </ScrollView>
-      <BottomSheet ref={bottomSheetRef} index={-1} snapPoints={['75%', '85%']} enablePanDownToClose={true}>
+      <BottomSheet 
+      ref={bottomSheetRef} 
+      index={-1} 
+      snapPoints={['75%', '85%']} 
+      enablePanDownToClose={true}
+      backgroundStyle={{ backgroundColor: "#fbfbfb"}}>
         <BottomSheetScrollView>
-          <In24hScreen />
+          <In24hScreen onClose={handleCloseBottomSheet}/>
         </BottomSheetScrollView>
       </BottomSheet>
     </View>

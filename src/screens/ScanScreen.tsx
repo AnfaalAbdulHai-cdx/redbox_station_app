@@ -40,7 +40,7 @@ const ScanScreen = () => {
         <GridItemDX className="col-span-full h-16">
           <BoxDX className="bg-black px-4 py-2 rounded-b-lg flex-row items-center h-full">
             <IconDX icon={ChevronLeftIcon} className="text-white w-8 h-8" />
-            <HeadingDX text="Support" className="text-white text-xl flex-1 text-center" />
+            <HeadingDX text="Scan" className="text-white text-xl flex-1 text-center" />
           </BoxDX>
         </GridItemDX>
 

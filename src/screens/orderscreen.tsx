@@ -5,6 +5,7 @@ import { StatusBar } from "react-native";
 import BoxDX from "../components/controls/boxdx";
 import HeadingDX from "../components/controls/headingdx";
 import LabelDX from "../components/controls/labeldx";
+import SwitchDX from '../components/controls/switchdx';
 import ImageDX from "../components/controls/imagedx";
 import TextFieldDX from "../components/controls/textfielddx";
 import BoxHeaderDX from "../components/controls/boxheaderdx";
@@ -51,20 +52,15 @@ const OrderScreen = () => {
       <StatusBar backgroundColor="black" barStyle="light-content" />
 
       {/* Header Section */}
-      <BoxHeaderDX className="px-2 py-5">
+      <BoxHeaderDX className="px-4 py-5">
         <HeadingWhiteDX>{t("redOrders")}</HeadingWhiteDX>
 
         {/* By Bag + Switch */}
         <BoxDX className="flex-row items-center">
           <LabelDX className="text-white text-md">{t("byBag")}</LabelDX>
-          <ImageDX 
-            source={require("../assets/Switch.png")} 
-            alt="Switch Icon"
-            className="w-8 h-4 ml-2"
-          />
+          <SwitchDX />
         </BoxDX>
       </BoxHeaderDX>
-     {/* <CustomHeader/> */}
       <Tab.Navigator
         key={key}
         screenOptions={{
