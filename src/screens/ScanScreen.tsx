@@ -1,67 +1,164 @@
-import React from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar, Text } from 'react-native';
-import GridDX from '../components/controls/griddx';
-import GridItemDX from '../components/controls/griditemdx';
+import React, {useRef, useState} from 'react';
+import {StatusBar} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import PressableDX from '../components/controls/pressabledx';
 import BoxDX from '../components/controls/boxdx';
 import HeadingDX from '../components/controls/headingdx';
+import LabelDX from '../components/controls/labeldx';
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import {useTranslation} from 'react-i18next';
+import {ItemiseData} from '../services/itemisedata';
+import ChangeServiceSheet from './changeservicesheet';
+import CategoryDetailSheet from './categorydetailsheet';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import CIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ScrollView } from 'react-native-gesture-handler';
 import IconDX from '../components/controls/icondx';
-import { ChevronLeftIcon } from '../components/ui/icon';
-// import ReceivedScreen from './ReceivedScreen';
+import {ChevronLeftIcon} from '../components/ui/icon';
 
-const Tab = createMaterialTopTabNavigator();
+interface ScanScreenProps extends NativeStackScreenProps<any, 'ScanScreen'> {}
 
-const ReceivedScreen = () => (
-  <BoxDX className="flex-1 bg-white items-center justify-center">
-    <Text className="text-black text-lg">Received Requests</Text>
-  </BoxDX>
-);
+interface Service {
+  serviceId: number;
+  serviceName: string;
+  displayCategoryCount: number;
+  isPopular: number;
+  img: any;
+  category?: {
+    categoryId: number;
+    categoryName: string;
+    displayItemCount: number;
+    isPopular: number;
+    image: any;
+    displayItems: string[];
+  }[];
+}
 
-const WaitingScreen = () => (
-  <BoxDX className="flex-1 bg-white items-center justify-center">
-    <Text className="text-black text-lg">Waiting Requests</Text>
-  </BoxDX>
-);
+interface Category {
+  categoryName: string;
+  image: any;
+}
 
-const ResolvedScreen = () => (
-  <BoxDX className="flex-1 bg-white items-center justify-center">
-    <Text className="text-black text-lg">Resolved Requests</Text>
-  </BoxDX>
-);
+const ScanScreen: React.FC<ScanScreenProps> = ({navigation}) => {
+  const {t} = useTranslation();
+  const serviceSheetRef = useRef<BottomSheet>(null);
+  const categorySheetRef = useRef<BottomSheet>(null);
 
-const ScanScreen = () => {
+  const [selectedService, setSelectedService] = useState<Service>(
+    ItemiseData[2]
+  );
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null,
+  );
+
+  const handleOpenServiceSheet = () => serviceSheetRef.current?.expand();
+  const handleCloseServiceSheet = () => serviceSheetRef.current?.close();
+
+  const handleOpenCategorySheet = (category: Category) => {
+    setSelectedCategory(category);
+    categorySheetRef.current?.expand();
+  };
+
+  const handleCloseCategorySheet = () => {
+    categorySheetRef.current?.close();
+    setSelectedCategory(null);
+  };
+
   return (
-    <SafeAreaView edges={['top']} className="flex-1 bg-white">
+    <SafeAreaView edges={['top']} className="flex-1 bg-secondary-50">
       <StatusBar backgroundColor="black" barStyle="light-content" />
 
-      <GridDX className="flex-1 w-full">
-        {/* Header with Fixed Height */}
-        <GridItemDX className="col-span-full h-16">
-          <BoxDX className="bg-black px-4 py-2 rounded-b-lg flex-row items-center h-full">
-            <IconDX icon={ChevronLeftIcon} className="text-white w-8 h-8" />
-            <HeadingDX text="Scan" className="text-white text-xl flex-1 text-center" />
-          </BoxDX>
-        </GridItemDX>
+      {/* Header */}
+      <ScrollView>
+      <BoxDX className="bg-black px-2 pb-5 flex-row justify-between items-center rounded-b-md w-full">
+        <PressableDX onPress={() => navigation.goBack()}>
+        <IconDX
+                icon={ChevronLeftIcon}
+                className="w-6 h-6 text-white"
+              />
+        </PressableDX>
+        <HeadingDX className="text-white text-[20px] font-semibold">
+          Itemise
+        </HeadingDX>
+        <BoxDX className="w-8" />
+      </BoxDX>
 
-        <GridItemDX className="flex-1">
-          <BoxDX className="flex-1 mt-2 pt-4">
-            <Tab.Navigator
-              screenOptions={{
-                tabBarLabelStyle: { fontSize: 14, fontWeight: 'bold', color: 'black' },
-                tabBarStyle: { backgroundColor: 'white' },
-                tabBarIndicatorStyle: { backgroundColor: 'black' },
-                tabBarActiveTintColor: 'black',
-                tabBarInactiveTintColor: 'gray',
-              }}
-            >
-              <Tab.Screen name="Received" component={ReceivedScreen} />
-              <Tab.Screen name="Waiting" component={WaitingScreen} />
-              <Tab.Screen name="Resolved" component={ResolvedScreen} />
-            </Tab.Navigator>
-          </BoxDX>
-        </GridItemDX>
-      </GridDX>
+      {/* Service Selection */}
+      <BoxDX className="px-4 py-3">
+        <LabelDX className="text-lg font-medium text-black">Add Items for</LabelDX>
+        <BoxDX className="flex-row justify-between items-center mt-2">
+          <LabelDX className="text-md font-medium">
+            {selectedService.serviceName}
+          </LabelDX>
+          <PressableDX onPress={handleOpenServiceSheet}>
+            <LabelDX className="text-blue-500 text-md font-medium">
+              Change Service
+            </LabelDX>
+          </PressableDX>
+        </BoxDX>
+        <BoxDX className="border-b border-secondary-700 mt-2" />
+      </BoxDX>
+
+      {/* Popular Section */}
+      <BoxDX className="px-4 mt-4">
+        <LabelDX className="text-md font-semibold">Popular</LabelDX>
+        <BoxDX className="flex-row items-center border border-secondary-700 bg-secondary-50-100 p-3 rounded-lg mt-2">
+          <CIcon name="diamond-stone" size={22} color="#E21F26" />
+          <LabelDX className="ml-3 text-md font-medium">Special Item</LabelDX>
+        </BoxDX>
+      </BoxDX>
+
+      {/* Category Section */}
+      <BoxDX className="px-4 mt-6">
+        <LabelDX className="text-md font-semibold">Category</LabelDX>
+        <BoxDX className="flex-row flex-wrap justify-between mt-2">
+          {selectedService?.category?.map((cat, index) => (
+            <PressableDX
+              key={index}
+              onPress={() => handleOpenCategorySheet(cat)}
+              className="w-[48%] bg-secondary-50 border border-secondary-700 p-4 rounded-lg mb-3 flex items-center justify-center">
+              <CIcon name="tshirt-crew" size={32} color="#E21F26" />
+              <LabelDX className="text-md font-medium mt-2 text-center">
+                {cat.categoryName}
+              </LabelDX>
+            </PressableDX>
+          ))}
+        </BoxDX>
+      </BoxDX>
+   </ScrollView>
+
+      {/* Bottom Sheet for Changing Services */}
+      <BottomSheet
+        ref={serviceSheetRef}
+        index={-1}
+        snapPoints={['50%', '75%']}
+        enablePanDownToClose={true}
+        backgroundStyle={{backgroundColor: '#fbfbfb'}}>
+        <BottomSheetScrollView>
+          <ChangeServiceSheet
+            onClose={handleCloseServiceSheet}
+            onSelectService={setSelectedService}
+            initialSelectedService={selectedService}
+          />
+        </BottomSheetScrollView>
+      </BottomSheet>
+
+      {/* Bottom Sheet for Category Details */}
+      <BottomSheet
+        ref={categorySheetRef}
+        index={-1}
+        snapPoints={['50%', '75%']}
+        enablePanDownToClose={true}
+        backgroundStyle={{backgroundColor: '#fbfbfb'}}>
+        <BottomSheetScrollView>
+          {selectedCategory && (
+            <CategoryDetailSheet
+              category={selectedCategory}
+              onClose={handleCloseCategorySheet}
+            />
+          )}
+        </BottomSheetScrollView>
+      </BottomSheet>
     </SafeAreaView>
   );
 };
