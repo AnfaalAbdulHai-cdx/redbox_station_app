@@ -13,7 +13,7 @@ interface Service {
     serviceName: string;
     displayCategoryCount: number;
     isPopular: number;
-    img: any; // Since you're using require() for images, `any` is appropriate
+    img: any;
     category?: {
       categoryId: number;
       categoryName: string;
@@ -28,7 +28,7 @@ interface Service {
   interface ChangeServiceSheetProps {
     onClose: () => void;
     onSelectService: (service: Service) => void;
-    initialSelectedService: Service; // Add this prop
+    initialSelectedService: Service; 
   }
   
 
@@ -37,7 +37,7 @@ const ChangeServiceSheet: React.FC<ChangeServiceSheetProps> = ({ onClose, onSele
 
   const handleServiceSelect = (service: Service) => {
     setSelectedService(service);
-    onSelectService(service); // Update the selected service in ScanScreen
+    onSelectService(service);
   };
 
   return (
@@ -51,7 +51,6 @@ const ChangeServiceSheet: React.FC<ChangeServiceSheetProps> = ({ onClose, onSele
         </LabelDX>
       </BoxDX>
 
-      {/* Service Selection List */}
       <BoxDX className="p-4">
         {ItemiseData.map((service: Service, index: number) => {
           const isSelected = selectedService.serviceName === service.serviceName;

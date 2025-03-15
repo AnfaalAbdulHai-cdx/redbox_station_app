@@ -20,7 +20,7 @@ const TextFieldDX = (props: any) => {
         isDisabled={props.isDisabled}
         isInvalid={props.isInvalid}
         isReadOnly={props.isReadOnly}
-        className="flex-row items-center border border-gray-300 rounded-lg px-3 py-2"
+        className="flex-row items-center border border-gray-300 rounded-lg py-2"
         
       >
         {/* Left Icon */}
@@ -39,7 +39,8 @@ const TextFieldDX = (props: any) => {
          placeholder={props.placeholder} 
          type={props.type === "password" && !showPassword ? "password" : "text"} // Ensures only password fields toggle
          value={props.value} 
-         onChangeText={props.onChangeText} 
+         onChangeText={props.onChangeText}
+         maxLength={props.maxLength}
         />
 
         {/* <InputField

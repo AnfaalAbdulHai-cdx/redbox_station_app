@@ -16,6 +16,8 @@ const CheckboxDX = (props: any) => {
       isDisabled={props.isDisabled}
       value={''}
       className={props.className}
+      isChecked={props.isChecked}
+      onChange={props.onChange}
     >
       <CheckboxIndicator>
         <CheckboxIcon as={CheckIcon} className="text-white bg-blue-500" />
